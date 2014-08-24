@@ -26,9 +26,10 @@ colnames( test ) <- c( "Subject", "Activity", as.character(features[,"Features"]
 data <- rbind( train, test )
 
 # Locate the columns with mean and standard deviation values
-colIndex1 <-  2 + grep( "mean()", as.character(features[,"Features"]) )
-colIndex2 <-  2 + grep( "std()", as.character(features[,"Features"]) )
-colIndex <- c( 1, 2, colIndex1, colIndex2 )
+colIndex1 <-  2 + grep( "mean", as.character(features[,"Features"]) )
+colIndex2 <-  2 + grep( "std", as.character(features[,"Features"]) )
+colIndex3 <-  2 + grep( "meanFreq", as.character(features[,"Features"]) )
+colIndex <- setdiff( c( 1, 2, colIndex1, colIndex2 ), colIndex3 )
 colIndex <- sort( colIndex )
 
 # Keep the required columns
@@ -41,7 +42,7 @@ for( loop1 in 1:length(activity) )
     as.character( activityLabels[activityLabels[,"Number"]==loop1,"Activity"] )
 
 # Write the data to hard disk
-write.table( data, "UCI HAR Dataset.txt" )
+write.table( data, "UCI HAR Dataset.txt", row.names=FALSE )
 
 # Data set with average of each variable
 avgData <- matrix( nrow=0, ncol=ncol(data) )
@@ -65,4 +66,4 @@ for( loop1 in 1:length(subject) )
 }
 
 # Write the average data to hard disk
-write.table( avgData, "UCI HAR Averaged Dataset.txt" )
+write.table( avgData, "UCI HAR Averaged Dataset.txt", row.names=FALSE )
